@@ -9,10 +9,14 @@ resource "digitalocean_droplet" "ubi" {
 
   connection {
     host = self.ipv4_address
-    user = "root"
+    user = var.user
     type = "ssh"
     private_key = file(var.pvt_key)
     timeout = "2m"
+  }
+
+  provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.user} -i '${self.ipv4_address},' --private-key ${var.pvt_key} ../ansible/playbook.yaml --ask-vault-pass"
   }
 
   # provisioner "remote-exec" {
@@ -24,3 +28,17 @@ resource "digitalocean_droplet" "ubi" {
   #   ]
   # }
 }
+
+resource "null_resource" "ansible" {
+  
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.user} -i '${digitalocean_droplet.ubi.ipv4_address},' --private-key ${var.pvt_key} ../ansible/playbook.yaml --ask-vault-pass"
+  }
+
+  depends_on = [digitalocean_droplet.ubi]
+}
+

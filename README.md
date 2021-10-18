@@ -4,7 +4,9 @@
 - Digital Ocean account
 - Generate terraform personal access token from https://cloud.digitalocean.com/account/api/tokens
 
-export DO_PAT="your_personal_access_token" # Can be added to ~/.zshrc
+```shell
+export DO_PAT="<your-token-here>"
+```
 
 - terraform
 - ansible
@@ -12,7 +14,12 @@ export DO_PAT="your_personal_access_token" # Can be added to ~/.zshrc
 
 ## Terraform
 
-1. Spin up server in cloud
+1. Spin up server in cloud 
+   ```shell
+terraform apply \
+  -var "do_token=${DO_PAT}" \
+  -var "pvt_key=$HOME/.ssh/id_rsa"
+   ```
 2. Configure gateway (subdomain, gateway firewall if available) & get IP
 
 ## Ansible

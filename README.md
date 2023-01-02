@@ -1,5 +1,20 @@
 # Tailscale exit node VPN with terraform & ansible
 
+Terraform module to spin up a digital ocean droplet & install tailscale in a single command :tada:
+
+The resulting droplet is enabled as an exit node which can be used as a VPN.
+
+Features:
+- [x] Single idempotent command
+- [x] Support for multiple configurations
+- [x] Firewall blocking all inbound traffic except https & icmp for tailscale
+
+How it works:
+
+1. Terraform creates droplet
+2. Terraform runs ansible playbook to install & enable tailscale via SSH
+3. Terraform creates firewall to prevent further non-tailscale access.
+
 ## Prerequisites
 
 - Digital Ocean account

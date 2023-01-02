@@ -1,4 +1,6 @@
-## Prerequisites
+# Tailscale exit node VPN with terraform & ansible
+
+## Prerequisites
 
 - Digital Ocean account
 - Tailscale account
@@ -26,13 +28,13 @@ Login into the tailscale web console and enable the exit node manually (after cr
 5. Run `terraform init` if you haven't already
 6. Run terraform to create the server and run the ansible playbook
    ```shell
-terraform apply \
-  -var "do_token=$YOUR_DIGITAL_OCEAN_ACCESS_KEY" \
-  -var "tailscale_authkey=$YOUR_TAILSCALE_AUTHKEY" \
-  -var "pvt_key=~/.ssh/id_ed25519" \
-  -var "ssh_key_name=m1" \
-  -var "instance_name=vpn" \
-  -var "region=lon1"
+   terraform apply \
+     -var "do_token=$YOUR_DIGITAL_OCEAN_ACCESS_KEY" \
+     -var "tailscale_authkey=$YOUR_TAILSCALE_AUTHKEY" \
+     -var "pvt_key=~/.ssh/id_ed25519" \
+     -var "ssh_key_name=m1" \
+     -var "instance_name=vpn" \
+     -var "region=lon1"
    ```
 
 ### Managing multiple droplets/configs

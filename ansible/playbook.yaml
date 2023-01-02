@@ -1,12 +1,16 @@
 - name: Servers
   hosts: all
-  roles:
-    - role: artis3n.tailscale
+  tasks:
+    - name: Configure Sysctl
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: 1
+        state: present
+        ignoreerrors: true
+        sysctl_set: true
+    - name: Install & run tailscale
+      include_role:
+        name: artis3n.tailscale
       vars:
-        tailscale_auth_key: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          63396561396637346532623638616262616439343030333633663232366239336465333432616538
-          3766653037303765633639303064393636306164366636370a653434366138653531336161666436
-          65653837366435353264656661303364343861313239303465653963396437636263396238396135
-          6461333939303863380a323764373536326164656130633438646533663363383038326636636664
-          30653261316264616564373830353339356435663334653365383134643564653837
+        tailscale_args: "--advertise-exit-node"
+        tailscale_authkey: "{{ lookup('env', 'TAILSCALE_KEY') }}"

@@ -6,7 +6,7 @@ resource "digitalocean_droplet" "ubi" {
   image  = "ubuntu-20-04-x64"
   name   = var.instance_name
   region = var.region
-  size   = "s-1vcpu-1gb"
+  size   = var.size
   ssh_keys = [
     data.digitalocean_ssh_key.terraform.id
   ]
@@ -27,7 +27,7 @@ resource "null_resource" "ansible" {
       type        = "ssh"
       host        = digitalocean_droplet.ubi.ipv4_address
       user        = var.user
-      private_key = file(var.pvt_key)
+      private_key = file(var.ssh_private_key)
       timeout     = "2m"
     }
 
@@ -40,7 +40,7 @@ resource "null_resource" "ansible" {
       TAILSCALE_KEY             = var.tailscale_authkey
       ANSIBLE_HOST_KEY_CHECKING = "False"
     }
-    command = "ansible-playbook -u ${var.user} -i '${digitalocean_droplet.ubi.ipv4_address},' --private-key ${var.pvt_key} ${path.module}/ansible/playbook.yaml"
+    command = "ansible-playbook -u ${var.user} -i '${digitalocean_droplet.ubi.ipv4_address},' --private-key ${var.ssh_private_key} ${path.module}/ansible/playbook.yaml"
   }
 
   depends_on = [digitalocean_droplet.ubi]

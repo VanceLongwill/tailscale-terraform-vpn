@@ -36,7 +36,10 @@ Login into the tailscale web console and enable the exit node manually (after cr
 
 ## Steps
 
-1. Create a `main.tf` and import the module (see [variables.tf](./variables.tf) for all available options). For example: 
+1. Generate a tailscale auth key at https://login.tailscale.com/admin/settings/authkeys
+2. Generate DigitalOcean personal access token at https://cloud.digitalocean.com/account/api/tokens
+3. Add your public SSH key https://cloud.digitalocean.com/account/security and make sure the name matches that supplied in the `ssh_key_name` terraform arg (defaults to `personal`)
+4. Create a `main.tf` and import the module (see [variables.tf](./variables.tf) for all available options). For example: 
    ```terraform
    variable "do_token" {
      sensitive = true
@@ -51,18 +54,16 @@ Login into the tailscale web console and enable the exit node manually (after cr
 
      region            = "lon1"
      instance_name     = "my-vpn"
+     ssh_key_name      = "personal"
+     ssh_private_key   = "~/.ssh/id_ed25519" 
      tailscale_authkey = var.tailscale_authkey
      do_token          = var.do_token
-     pvt_key           = "~/.ssh/id_ed25519"
    }
    ```
-2. Generate a tailscale auth key at https://login.tailscale.com/admin/settings/authkeys
-3. Generate terraform personal access token from https://cloud.digitalocean.com/account/api/tokens
-4. Add your public SSH key https://cloud.digitalocean.com/account/security and make sure the name matches that supplied in the `ssh_key_name` terraform arg (defaults to `personal`)
-6. Run `terraform init`
-7. Run terraform to create the server and run the ansible playbook
+5. Run `terraform init`
+6. Run terraform to create the server and run the ansible playbook
    ```shell
    terraform apply \
-     -var "do_token=$YOUR_DIGITAL_OCEAN_ACCESS_KEY" \
-     -var "tailscale_authkey=$YOUR_TAILSCALE_AUTHKEY" \
+     -var "do_token=<your-digital-ocean-access-token-here>" \
+     -var "tailscale_authkey=<your-tailscale-authkey-here>" \
    ```

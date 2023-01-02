@@ -32,5 +32,6 @@ resource "digitalocean_firewall" "only-tailscale" {
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
 
+  # Tailscale must be installed & up before we block outside access
   depends_on = [null_resource.ansible]
 }

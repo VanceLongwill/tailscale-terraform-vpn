@@ -16,7 +16,7 @@ variable "ssh_key_name" {
   description = "The name of the DigitalOcean ssh key that will be granted SSH access to the droplet"
 }
 
-variable "pvt_key" {
+variable "ssh_private_key" {
   type        = string
   description = "Path to the SSH private key that will be used to connect to the instance, this should match the key refered to by the `ssh_key_name` variable"
 }
@@ -36,4 +36,10 @@ variable "region" {
   type        = string
   description = "The DigitalOcean region where the droplet will be created"
   default     = "lon1"
+}
+
+variable "size" {
+  type        = string
+  description = "The DigitalOcean droplet size slug"
+  default     = "s-1vcpu-1gb"
 }

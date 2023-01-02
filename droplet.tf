@@ -40,7 +40,7 @@ resource "null_resource" "ansible" {
       TAILSCALE_KEY             = var.tailscale_authkey
       ANSIBLE_HOST_KEY_CHECKING = "False"
     }
-    command = "ansible-playbook -u ${var.user} -i '${digitalocean_droplet.ubi.ipv4_address},' --private-key ${var.pvt_key} ../ansible/playbook.yaml"
+    command = "ansible-playbook -u ${var.user} -i '${digitalocean_droplet.ubi.ipv4_address},' --private-key ${var.pvt_key} ./ansible/playbook.yaml"
   }
 
   depends_on = [digitalocean_droplet.ubi]

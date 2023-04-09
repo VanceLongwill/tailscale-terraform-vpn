@@ -65,5 +65,5 @@ Login into the tailscale web console and enable the exit node manually (after cr
    ```shell
    terraform apply \
      -var "do_token=<your-digital-ocean-access-token-here>" \
-     -var "tailscale_authkey=<your-tailscale-authkey-here>" \
+     -var "tailscale_authkey=<your-tailscale-authkey-here>"
    ```
